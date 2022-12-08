@@ -1,0 +1,287 @@
+import random #a module(file of prewritten code)
+import os
+from pygame import mixer
+
+mixer.init()
+mixer.music.load('Intro.mp3')
+mixer.music.play()
+os.system('color 00')
+Inventory = ['A tiny scale(fish)', '',]
+room2First = True #boolean value
+room4first = True
+
+PlayerHealth = 160
+BossHealth = 150
+
+def Boss(PlayerHealth, BossHealth):#function definition
+    while BossHealth > 0 and PlayerHealth >0:
+        HasSword = False
+        for i in range (len(Inventory)): 
+            if Inventory[i] == 'Greatsword':#searching inventory for specific item
+                HasSword = True#if it has specific item, then
+            if HasSword == True:
+                damage = random.randrange(50, 70)#The damage increases to be within the range 50-70
+            else:
+                damage = random.randrange(5,10)#Otherwise the damage is lowered to be within 5 - 10
+        #player attack
+        print("You hit the monster for", damage) #Printing the damage you dealt to the monster, damage is variable called
+        BossHealth -= damage #Subtracting the damage from the boss's health
+        print("The monster now has", BossHealth, "health left.")#Print how much health the boss has left
+        
+        #Monster damage
+        damage = random.randrange(5,10)#the damage dealt by the boss
+        if BossHealth >0:#as long as the boss's health is above 0,
+            print("The monster attacks you for", damage)#It will continue to print how much the boss attacks you for
+            PlayerHealth -= damage #Subtracting the boss damage from your health
+            print("You now have", PlayerHealth, "health left.") #Printing how much health you have left
+        choice = input("press c to continue fighting")#Giving the user a choice to use an item
+#         if choice == 'potion' or choice == 'Potion' or choice == 'p' or choice == 'P' and Inventory[2] == "empty":#setting up the choice for if they try to use the item without having the item
+#             print("You don't have any of this item.")#Tell the player they don't have any of the item
+#         if choice == 'potion' or choice == 'p' or choice == 'Potion' or choice == 'P' and Inventory[2] == "health elixir": #Choice setup aka what they can type to be able to use + making sure their Inventory has that specific item
+#             PlayerHealth += 50 #Adding to the health of the player
+#             print("You drink the elixir and are surrounded by a magical glow. You  feel strength filling your body. You regain 50 health.")#print description of you drinking the potion
+#             Inventory[2] = "empty"#erase the health elixir from your Inventory
+#             print(Inventory)
+        
+        if choice == 'c' or choice == 'C':
+            print("You take a stance, ready to continue fighting.")
+        else:
+            print("I don't understand that function")#Tell the player I don't understand if they type in anything other than the set choices
+        if PlayerHealth <= 0:
+            print("You are defeated")
+        if BossHealth <=0:#If the boss's health is less than or at 0, it dies
+            print("You slay the Manticore, piercing your greatsword right through it's glowing eye")#Printing description of you killing the monster
+            print("You have defeated the manticore. It's chest reveals a shining magic heart gem. The heart magic is still there, but it is leaking quickly from where you pierced it. Take it?")
+            choice = input()
+            if choice == 'yes' or choice == 'Yes' or choice == 'take it' or choice == 'take' or choice == 'Take it' or choice == 'Take':
+                print("You rip the heart from the manticore's chest.")
+                Inventory.append('heart')
+            if choice == 'no' or choice == 'No' or choice == 'Leave it' or choice == 'leave it' or choice == 'leave' or choice == 'Leave':
+                print("You leave the heart where it is, watching the heart magic slowly dissipate.")
+    return PlayerHealth#return all your health
+
+def monster(biome):#function definiton
+    num = random.randrange(0,100)
+    if biome == "Deep-sea cave":#biome variable, determing where certain monsters will spawn
+        if num < 20: #20percentchance
+          print("A mysterious demi-human deep sea creature attacks you! It's sharp, gleaming fangs reach ferociously for your neck.")
+        elif num < 50: #30 percent chance
+          print("A water- born ghoul appears! Bogged down with the look of the drowned, the ghoul extends it's freezing fingers towards your chest - it's looking for you heart...in very violent way!")
+        elif num < 90:#40 percent chance
+          print("The sweet song of a siren drifts from the inner cave, lulling you into a trance. You find yourself walking towards the source, but none of your limbs will respond when you try to break away!")
+        else: #10 percent chance
+          print("You encounter a extremely luminous stalactite dripping with an unknown goopy liquid. Entranced by its texture and sheen, you reach out to touch it - inducing a temporary paralyzation effect caused by the unknown liquid. You are frozen for 3 seconds.")
+    if biome == "Moonpool - Safe room":#biome
+        if num < 25:#25 percent chance
+          print("A smooth-backed eel with silky and fragile blue wings ruffles the surface of the pool as it darts around. It's indicolite eyes peek comfortingly at you, and it nuzzles against your hand as you poke it in the water.")
+        elif num < 50:
+          print("A faint cricketing noise catches your attention. Blended in with the damp cave walls, a crunchy brown bug sits. It chirps a tune when you approach.")
+        elif num < 10:
+          print("A milky wisp rises from the center of the pool, and you feel as though you can just make out a pair of jeweled eyes within it. It hovers furtively, judging your every decision.")
+        elif num < 15:
+          print("Coral and other sea plants wave amiably from the shallow pool. Every once in a while, long eared and winged sprites with skin the color of blueberries flit from inside the groupings of plants to the edge of the pool. Their curiousity leaks from wide, innocent eyes.")
+    if biome == "Geyser Galore":
+        if num < 5:
+          print("Startling fire sprites nip at your fingers and ears, leaving a burning lip mark on every spot. You wince and try to nudge them away, but it only enrages them. Swirling beams of bubbly fire-water engulfs the mischevious sprites, transforming them into huge fire elf-spirits.")
+        if num < 10:
+          print("A lizard with bumpy skin and molten lava running between the cracks hisses at you and bares it's fangs, stained black with soot. It lunges for you achilles heel!")
+        if num < 15:
+          print("Wisps of molten lava converge, forming a foggy, melting, monsterous mess. It steams threateningly, a single drop from its shapeless form burning through the mithril floor about 6 ft deep. It advances towards you, swampy 'hands' lobbing fireballs at you as it goes.")
+        if biome == "Seaside Cove":#biome
+            print()
+
+room = 1#sets us up in room 1
+print("You wake up in a swampy cave with fog so heavy that it seems to hinder your ability to breathe. Icey droplets of what you assume to be water falls from a hidden ceiling onto you. You shiver as it makes contact.")
+while True:#Game loop
+  
+     #------------------------------------------------------------------------------------- 
+        if room == 1:#while in room 1, these are the choices/options
+            print("Something harder than the freezing droplets patters onto your wrist. You squeeze it lightly and feel a small latch near what you assume to be the top.")
+            Inventory.append("health elixir")#add health elixir into the inventory list
+            print("As you cannot see more than a foot in front of you, you feel your way along the rough stone walls until you reach a sudden opening. Will you go through it?")
+            choice = input()#sets up player input
+            if choice == 'yes' or choice == 'Yes' or choice == 'go through' or choice == 'Go through':
+              room = 2#if any of these choices are typed, the room becomes 2
+          #-------------------------------------------------------------------------------------      
+        if room == 2:#while in room 2 these are the options
+            monster("Moonpool - Safe room") #biome call, certain monsters will now spawn here
+            if room2First == True:#If this variable is true then
+                print("You stumble your way through the dark opening and slam into what feels to your bruised skin like a tough wooden door. It doesn't push inwards, so you grope for a handle or knob of some sort. You find it and pull, a rush of pure light brings tears to your eyes as you stare into the room. An enormous pool sits in the center; An opening in the cave above it allows the sun to shine through, reflecting the time aboveground. After further observation, you also find two more doors in the room. The one to your west is pearly white with jewel encrusted, round gold handles. Two sea shell knockers sit far above them at almost the top of the doors. Through the cracks at the door hinges, you can just barely see something bright orange flickering inside. You can feel an unbearable heat emanating from the room just standing outside. You quickly move onto the next door to escape it. The second door to your east is fully glass, handle and hinges aside. The room inside is mostly darkened, but you can see something shining just inside the door, illuminating a lengthy hallway. You can either head back into the endless darkness of the cavern you woke up in, or pick a door to enter. What will you do?")#Print this description
+
+                  
+                room2First = False#This variable now becomes false, so it won't print that description again when you enter room 2
+            else:#below is what will print when entering room 2 after the first time
+                print("The white door continues to emanate heat. The glass door winks with a flash of the sun. What will you do now?")#print for room 2 description
+            choice = input()#Player input
+            if choice == 'open white door' or choice == 'White door' or choice == 'w' or choice == 'W' or choice == 'white door' or choice == 'white' or choice == 'White':
+                room = 3#If any of these are typed, room becomes 3
+            if choice == 'open glass door' or choice == 'Glass door' or choice == 'G' or choice == 'g' or choice == 'glass' or choice == 'Glass' or choice == 'glass door':
+                room = 4#If any of these are typed, room becomes 4
+            if choice == 'go back' or choice == 'turn back' or choice == 'return' or choice == 'Return' or choice == 'back' or choice == 'Back':
+                room = 1#If any of these are typed, room becomes 1
+            
+        if room == 3:#While in room 3, these are the options
+            if Inventory[1] == 'Gloves':#If this specific slot in the Inventory list holds the item gloves then
+                print("You pull on the ornate handles, surprised that the seemingly flimsy glove are able to withstand the heat. As the door opens a wave of steam rolls towards you, nearly scorching you alive. You advance into a geyser filled cave, dripping with lava-like liquid.")#This will print
+                room = 8#and room will become 8
+            else:#Otherwise
+                print("You gently pinch the fancy handles of the white doors, pulling as hard as you can with only a few fingers. Surprisingly, it is much heavier than it looks, and it only budges a few inches. Your fingers start to heat rather painfully, and you quickly pull away. You decide to use your both hands this time despite the heat, but as you make prolonged contact with the door, your skin begins to blister and burn. You shriek, taking a few steps back. Your hands continue to sting. Perhaps there is a way to help soothe them around? At any rate, it looks like you won't be getting access to the room behind the white doors anytime soon; At least, not until you get some protection for your hands.")#This will print
+                room = 2#and room will stay 2
+                
+        if room == 8:#while in room 8, these are the options
+            monster("Geyser Galore") #function call(monster generator) with the biome geyser galore
+            print("A single door rests inside the terribly hot room. Enter?")#print description
+            choice = input()
+            if choice == 'yes' or choice == 'Yes' or choice == 'Enter' or choice == 'enter' or choice == 'go through' or choice == 'Go through':
+                room = 9#if any of these are typed, the room becomes 9
+            if choice == 'no' or choice == 'No' or choice == 'Stay' or choice == 'stay' or choice == "Don't enter" or choice == "don't enter":
+                room = 8#if any of these are typed, the room stays as 8
+        
+        if room == 9:#while in room 9, these are the options
+            print("You enter a large chamber with 4 altars in the middle, surrounding a statue of a beauteous woman. As you investigate more, you see three doors in the room. One leads to your right, one to your left, and the other straight ahead. Or you can return through the passageway behind you. What will you do?")#print description and question
+            HasItems = False
+            for i in range(len(Inventory)):
+                if Inventory[i] == 'Rainbow mixture' and Inventory[i] == 'Pearl' and Inventory[i] == 'statue' and Inventory[i] == 'A tiny scale(fish)' and Inventory[i] == 'feather':
+                    HasItems = True
+                    if HasItems == True:
+                        print("You have gathered all the items needed for the ritual. Place them on the altars?")
+                        choice = input()
+                        if choice == 'yes' or choice == 'Yes' or choice == 'place items' or choice == 'Place items':
+                            print("You begin placing the items on their respective altars. The statue is placed on the altar with the basin top, and you pour the mixture over it. The pearl is fitted upon the altar with the red cushion, and the feather is placed on the altar high above the others. It grinds downward but stops still above the other altars. It seems to be missing something.")
+                        if Inventory[0] == 'A tiny scale(fish)':
+                            print("The scale resonates as you hold it near the taller altar. Place it?")
+                            choice = input()
+                            if choice == 'yes' or choice == 'Yes' or choice == 'Place' or choice == 'place':
+                                print("You place the scale. The altar sinks from the weight to match up with the others.")
+                                print("The spirit inside the statue appears weakly, seemingly happy. It tells you that only one more piece is needed to complete the ritual.")
+                        if Inventory[3] == 'Crystal':
+                            print("You investigate the statue further and find a small crevice the same shape as the pendant you picked up. You try fitting the pendant in the slot; it fits perfectly.")
+                            print("The statue's spirit begins to grow brighter. Suddenly a large flash of light blinds you. When you open your eyes, a portal has replaced the statue. The spirit is gone. You wondered what happened to it. Enter the portal?")
+                            choice = input()
+                            if choice == 'yes' or choice == 'Yes' or choice == 'Enter' or choice == 'enter':
+                                print("You step into the portal. It whirls frighteningly, throwing you into a tunnel of light and blurred surroundings. You feel a bit like throwing up from all the stimulation. In a pop, you discover yourself in a sunken graveyard. Your memories come flooding back. You've escaped!")
+            choice = input()
+            if choice == 'right' or choice == 'Right' or choice == 'go right' or choice == 'Go right':
+                room = 10#if any of these things above are typed, the room becomes 10
+            if choice == 'left' or choice == 'Left' or choice == 'go left' or choice == 'Go left':
+                room = 11#if any of these things above are typed, the room becomes 11
+                print("It seems to be a laboratory, filled with scattered equipment and strange objects.")#print description
+            if choice == 'straight' or choice == 'Straight' or choice == 'ahead' or choice == 'Ahead' or choice == 'Forward' or choice == 'forward':
+                room = 12#if any of these things above are typed, the room becomes 12
+                print("The room is filled with cages upon cages, all with exotic birds inside them. One cage in the middle stands out, gold instead of brass and containing a grand peacock, of which the likes have never been seen before.")
+            if choice == 'return' or choice == 'Return' or choice == 'Go back' or choice == 'go back' or choice == 'back' or choice == 'Back':
+                room = 8#if any of these things above are typed, the room becomes 8
+                
+        if room == 12:
+            choice = input()
+            if choice == 'approach' or choice == 'Approach' or choice == 'gold cage' or choice == 'Gold cage':
+                print("You approach the golden cage, marveling at the peacock's grand starry feathers. It lowers it's head haughtily, and plucks out the smallest one. It swings it to the ground through the bars of the cage.")
+                print("You gladly pick up the feather. The peacock seems to snort disdainfully at you.")
+                Inventory.append('feather')
+            if choice == 'turn back' or choice == 'Turn back' or choice == 'return' or choice == 'Return':
+                room = 9        
+                
+        if room == 10:#while in room 10, these are the options
+            print("A bed of seaweed rests to the far side, fair and green, you notice a bulge under it's stringy covers. A fine wooden chest sits in the opposite corner of the room, as wide as a sword and tall as a mushroom.")#print description
+            choice = input()
+            if choice == 'check covers' or choice == 'Check covers' or choice == 'Check under covers' or choice == 'check under covers' or choice == 'pull back covers' or choice == 'covers' or choice == 'Covers' or choice == 'Pull back covers' or choice == 'Pull covers' or choice == 'pull covers' or choice == 'Remove covers' or choice == 'remove covers':
+                print("You find a large oyster with something in its mouth. Pry it open?")#if any of the above is typed, print this descriptions and offer another choice
+            if choice == 'chest' or choice == 'Chest' or choice == 'Open chest' or choice == 'open chest' or choice == 'check chest' or choice == 'Check chest':
+                print("You open the chest. Inside lays a large obsidian greatsword")#if any of these are typed, print this description and 
+                Inventory.append('Greatsword')#add the item to the player inventory
+            print(Inventory)
+            choice = input()
+            if choice == 'yes' or choice == 'Yes' or choice == 'pry open' or choice == 'Pry open' or choice == 'Pry' or choice == 'pry' or choice == 'open' or choice == 'Open':
+              print("You pry open the oyster and find a flushed, luminescent pearl sitting delicately inside. You take the pearl.")#if any of the above are typed, print this description and
+              Inventory.append('Pearl')#add item to player inventory
+            if choice == 'no' or choice == 'No':
+              print("You leave the oyster alone, covering it back up.")#if any of these are typed, print description
+            if choice == 'turn back' or choice == 'return' or choice == 'Return' or choice == 'go back' or choice == 'Turn back' or choice == 'Go back':
+                room = 9#if any of the above are typed, the room becomes 9
+        if room == 11:#while in room 11 these are the options
+            print("One table holds a replica of the statue in the altar room, a book, and a beaker of a liquid that looks a lot like blood. The other holds random scattered lab equipment.")
+            choice = input()
+            if choice == 'statue' or choice == 'Statue' or choice == 'Replica' or choice == 'replica':
+                print("A smaller version of the statue in the altar room. It smiles grimly at you, sending shivers down your spine.")#if any of the above are typed, print description
+                Inventory.append('statue')#add item to player inventory
+            if choice == 'book' or choice == 'Book' or choice == 'look at book' or choice == 'examine book':
+                print("It's in a language you can't understand, but has some diagrams to follow. You see a beaker of dark liquid being mixed with a vial of another lighter liquid. From what you can garner, the small statue is then placed in the altar with the basin top, and the mixture is poured over it.")#print description if any of the above are typed
+            if choice == 'beaker' or choice == 'Beaker' or choice == 'dark liquid' or choice == 'Dark liquid':
+                print("It's a vial of dark, blood-like liquid. It's awfully similar to the beaker shown in the book.")#print description if any of the above are typed
+            if choice == 'lab equipment' or choice == 'Lab equipment' or choice == 'Equipment' or choice == 'equipment':
+                print("You shuffle through the lab equipment, but only find one useful thing. A small drawer on the table reveals a vial of light liquid.")#if any of the above are typed, print description and 
+                Inventory.append('Light liquid')#add item to player inventory
+            hasLight = False #sets hasLight to false aka you don't have the above item
+            for i in range(len(Inventory)):#searching for a specific item within the entire inventory when you cannot force it to be in a specific slot
+                if Inventory[i] == 'Light liquid': #searching inventory for the item 'light liquid'
+                    hasLight = True#if the player has it, set hasLight to true aka you have the item
+                while hasLight == True:#while the player has this item, (loop)
+                    print("You can mix the liquids now. Do so?")#print this description
+                    break
+            choice = input()
+            if choice == 'no' or choice == 'No' or choice == "don't mix" or choice == "Don't mix":
+                print("You decide to keep the liquids seperate")#if any of the above are typed, print this description
+            if choice == 'yes' or choice == 'yes' or choice == 'Mix' or choice == 'mix':
+                print("The liquids bubble up, foaming and frothing for a good minute before it dies down. What's left is an oddly rainbow mixture.")#if any of the above are typed, print this description
+                Inventory.append('Rainbow mixture')
+                for i in range (len(Inventory)):
+                    if Inventory[i] == 'Rainbow mixture':
+                        hasLight = False
+                        if hasLight == False:
+                            print("The light liquid is all used up.")
+                            print("What will you do now?")
+            choice = input()
+            if choice == 'turn back' or choice == 'Turn back' or choice == 'Return' or choice == 'return':
+                room = 9
+
+    #------------------------------------------------------------------------------------- 
+        if room == 4:
+            monster("Deep-sea cave")#function call biome in ()
+            if room4first == True:
+                print("Grasping the cool steel knob, you swing the glass door open. Aside from the hallway illuminated by the mysterious object, you cannot see anything else. Taking a closer look at the source of light, you see a peridot crystal carved into the shape of a symbol unknown to you. Cracked and rusted chains attached to the dull gold frame the jewel is slotted in perhaps indicate that it used to be a necklace. It glistens neatly. You can use this crystal as semi-flashlight now to see what's further ahead, although it doesn't seem like you can turn it off. It almost seems vaguely familiar.")
+                Inventory.append("Crystal")
+                print("Would you like to continue further along?")
+                room4first = False
+            else:
+                print("The long hallway is eerily silent. You peer out the glass door into another room")
+                choice = input()
+                if choice == 'no' or choice == 'No':
+                    room = 4
+                    print("You continue to wait.")
+                if choice == 'yes' or choice == 'Yes':
+                    print("You walk down the hallway")
+                    print("As you enter the room, you are consumed by the all-encompassing darkness. You stumble your way across a rocky stone path with the help of the crystal, and find a small loose stone that feels as though it could be pushed in. You also feel a small dent lower down and further to the right in the wall. It seems like it could be holding something. Press on the stone?")
+                    room = 5
+                if choice == 'turn back' or choice == 'return' or choice == 'Return' or choice == 'Turn back' or choice == 'Go back' or choice == 'back' or choice == 'Back':
+                    room = 2 
+        if room == 5:
+            print("The heavy darkness is barely warded off by the light of the pendant. There is a small stone button to press and a dent in the wall.")
+            choice = input()
+            if choice == 'no' or choice == 'No' or choice == 'n' or choice == 'N':
+                print("You continue to wait, pressed up against the cold stone.")
+            if choice == 'turn back' or choice == 'Turn back' or choice == 'go back' or choice == 'Go back' or choice == 'return' or choice == 'Return':
+                room = 4
+            if choice == 'yes' or choice == 'Yes' or choice == 'y' or choice == 'Y' or choice == 'press' or choice == 'Press' or choice == 'stone' or choice == 'Stone':
+                print("The stone button opens a sliding hidden door that leads to the outside, a small beach cove that leads out presumably into the open sea.")
+                print("Enter the cove?")
+                room = 6
+            if choice == 'dent' or choice == 'Dent' or choice == 'wall' or choice == 'Wall':
+                Inventory[1] = 'Gloves'
+                print("You have found a pair of gloves, that feel cool to the touch. Just touching them seems to sooth your burnt hands.")
+            if Inventory[1] == 'Gloves':
+                print("There is nothing else here.")
+            
+        if room == 6:
+            choice = input()
+            if choice == 'yes' or choice == 'Yes' or choice == 'y' or choice == 'Y' or choice == 'enter' or choice == 'Enter':
+                room = 7
+            if choice == 'no':
+                print("You wait, poised at the entrance")
+            if choice == 'turn back' or choice == 'return' or choice == 'Return':
+                room = 5
+        if room == 7:
+            os.system('color 0c')
+            print("You step into the peaceful looking cove, but an ominous feeling covers you, like a heavy weight placed on your chest.")
+            print("A giant manticore approaches, growling as shadowy mist leaks from its eyes.")
+            PlayerHealth = Boss(PlayerHealth, BossHealth)                                
+            break
